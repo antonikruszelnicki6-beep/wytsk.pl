@@ -457,14 +457,14 @@ function initTilt() {
 // Jak zdobyć: Discord → Ustawienia → Zaawansowane → Tryb dewelopera
 // → prawy klik na swój nick → Kopiuj identyfikator użytkownika
 // ⚠️ Musisz być na serwerze: discord.gg/lanyard
-const DISCORD_USER_ID = "TU_WKLEJ_SWOJE_ID";
+const DISCORD_USER_ID = "293020688682582016";
 let discordInterval = null;
 
 async function initDiscordPresence() {
   const el = document.getElementById('discord-activity');
   if (!el) return;
 
-  if (!DISCORD_USER_ID || DISCORD_USER_ID === "TU_WKLEJ_SWOJE_ID") {
+  if (!DISCORD_USER_ID || DISCORD_USER_ID === "293020688682582016") {
     el.style.display = 'none';
     return;
   }
