@@ -470,7 +470,7 @@ async function initDiscordPresence() {
   }
 
   try {
-    const res = await fetch(`https://api.lanyard.rest/v1/users/${DISCORD_USER_ID}`);
+    const res = await fetch(`https://api.lanyard.rest/v1/users/${293020688682582016}`);
     const json = await res.json();
 
     if (!json.success || !json.data) {
