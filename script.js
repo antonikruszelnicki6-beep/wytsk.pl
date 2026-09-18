@@ -464,13 +464,13 @@ async function initDiscordPresence() {
   const el = document.getElementById('discord-activity');
   if (!el) return;
 
-  if (!DISCORD_USER_ID || DISCORD_USER_ID === "293020688682582016") {
+  if (!DISCORD_USER_ID || DISCORD_USER_ID === "TU_WKLEJ_SWOJE_ID") {
     el.style.display = 'none';
     return;
   }
 
   try {
-    const res = await fetch(`https://api.lanyard.rest/v1/users/${293020688682582016}`);
+    const res = await fetch(`https://api.lanyard.rest/v1/users/${DISCORD_USER_ID}`);
     const json = await res.json();
 
     if (!json.success || !json.data) {
