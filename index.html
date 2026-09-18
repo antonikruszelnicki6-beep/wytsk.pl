@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>wytsk.pl</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+
+<div id="intro">
+    <div class="intro-content">
+        <h1 class="intro-title">Kliknij, aby wejść</h1>
+        <p class="intro-sub">wytsk.pl</p>
+    </div>
+</div>
+
+
+<canvas id="bg-canvas"></canvas>
+<div    id="bg-image"></div>
+<video  id="bg-video" autoplay muted loop playsinline preload="auto"></video>
+<div    id="bg-youtube"><div id="yt-player"></div></div>
+
+
+<div class="cursor-dot"></div>
+<div class="cursor-ring"></div>
+
+
+<main class="card" id="card">
+    <div class="avatar-wrap">
+        <img id="avatar" src="" alt="avatar" class="avatar" />
+    </div>
+
+    <h1 id="name" class="name"></h1>
+    <p  id="bio"  class="bio"></p>
+
+    <div id="links" class="links"></div>
+
+    <div class="bottom-bar">
+        <button id="music-toggle" class="music-btn" title="Muzyka">🔊</button>
+        <span   id="visits" class="visits">—</span>
+    </div>
+
+    <footer class="footer">© wytsk.pl</footer>
+</main>
+
+
+<audio id="audio" loop></audio>
+
+<script src="config.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
