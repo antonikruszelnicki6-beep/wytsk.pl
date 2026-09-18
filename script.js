@@ -283,37 +283,34 @@ function attachCursorListeners() {
 
 
 async function initCounter() {
-    const el = document.getElementById('visits');
-    const url = CONFIG.counter.url;
-    const path = CONFIG.counter.path || 'visits';
+  const el = document.getElementById('visits');
+  const url = CONFIG.counter.url;
+  const path = CONFIG.counter.path || 'visits';
 
-    if (!url || url.includes('TWOJ-PROJEKT')) {
-        el.textContent = '👁 —';
-        console.warn('Uzupełnij CONFIG.counter.url w config.js');
-        return;
-    }
+  if (!url || url.includes('TWOJ-PROJEKT')) {
+    el.innerHTML = `${ICONS.eye} —`;
+    console.warn('Uzupełnij CONFIG.counter.url w config.js');
+    return;
+  }
 
-    try {
+  try {
+    const getRes = await fetch(`${url}/${path}.json`);
+    let value = await getRes.json();
+    if (typeof value !== 'number') value = 0;
 
-        const getRes = await fetch(`${url}/${path}.json`);
-        let value = await getRes.json();
-        if (typeof value !== 'number') value = 0;
+    value += 1;
+    await fetch(`${url}/${path}.json`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(value)
+    });
 
-
-        value += 1;
-        await fetch(`${url}/${path}.json`, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(value)
-        });
-
-        el.textContent = `👁 ${value.toLocaleString('pl-PL')}`;
-    } catch (e) {
-        el.textContent = '👁 —';
-        console.warn('Licznik nie odpowiada:', e.message);
-    }
+    el.innerHTML = `${ICONS.eye} ${value.toLocaleString('pl-PL')}`;
+  } catch (e) {
+    el.innerHTML = `${ICONS.eye} —`;
+    console.warn('Licznik nie odpowiada:', e.message);
+  }
 }
-
 
 function initIntro() {
     const intro = document.getElementById('intro');
@@ -336,36 +333,38 @@ function initIntro() {
 }
 
 function startMusicAfterIntro() {
-    const m = CONFIG.music;
-    const audio = document.getElementById('audio');
-    const btn = document.getElementById('music-toggle');
+  const m = CONFIG.music;
+  const audio = document.getElementById('audio');
+  const btn = document.getElementById('music-toggle');
 
-    if (!m.enabled || !m.src) {
-        btn.style.display = 'none';
-        return;
-    }
+  if (!m.enabled || !m.src) {
+    btn.style.display = 'none';
+    return;
+  }
 
-    audio.src = m.src;
-    audio.loop = m.loop;
-    audio.volume = m.volume;
-    audio.muted = false;
+  audio.src = m.src;
+  audio.loop = m.loop;
+  audio.volume = m.volume;
+  audio.muted = false;
 
-    audio.play().then(() => {
-        btn.classList.remove('muted');
-        btn.textContent = '🔊';
-    }).catch(() => {
-        btn.classList.add('muted');
-        btn.textContent = '🔇';
-    });
+  // ustaw ikonę zgodnie ze stanem
+  const setIcon = (muted) => {
+    btn.innerHTML = muted ? ICONS.muted : ICONS.volume;
+    btn.classList.toggle('muted', muted);
+  };
 
-    btn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        audio.muted = !audio.muted;
-        btn.classList.toggle('muted', audio.muted);
-        btn.textContent = audio.muted ? '🔇' : '🔊';
-    });
+  audio.play().then(() => {
+    setIcon(false);
+  }).catch(() => {
+    setIcon(true);
+  });
+
+  btn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    audio.muted = !audio.muted;
+    setIcon(audio.muted);
+  });
 }
-
 
 function initRipple() {
     document.addEventListener('click', (e) => {
