@@ -1,4 +1,6 @@
-
+// ============================================================
+//   INICJALIZACJA
+// ============================================================
 document.addEventListener('DOMContentLoaded', () => {
     setProfile();
     setBackground();
@@ -11,6 +13,9 @@ document.addEventListener('DOMContentLoaded', () => {
     initRipple();
     initTilt();
 
+    initDiscordPresence();
+    discordInterval = setInterval(initDiscordPresence, 15000);
+
     if (CONFIG.effects.fadeIn) {
         setTimeout(() => document.getElementById('card').classList.add('visible'), 100);
     } else {
@@ -18,14 +23,18 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-
+// ============================================================
+//   PROFIL
+// ============================================================
 function setProfile() {
     document.getElementById('name').textContent = CONFIG.name;
     document.getElementById('avatar').src = CONFIG.avatar;
     document.title = CONFIG.name + ' • wytsk.pl';
 }
 
-
+// ============================================================
+//   EFEKT PISANIA BIO
+// ============================================================
 function startTyping() {
     const el = document.getElementById('bio');
     const text = CONFIG.bio;
@@ -42,7 +51,9 @@ function startTyping() {
     })();
 }
 
-
+// ============================================================
+//   IKONY SVG
+// ============================================================
 const ICONS = {
     discord: `<svg viewBox="0 0 24 24"><path d="M20.317 4.369A19.79 19.79 0 0 0 15.885 3c-.2.36-.43.845-.588 1.23a18.27 18.27 0 0 0-5.594 0A13.4 13.4 0 0 0 9.11 3a19.74 19.74 0 0 0-4.43 1.37C1.86 8.61 1.1 12.75 1.48 16.84a19.9 19.9 0 0 0 5.99 3.02c.48-.66.91-1.36 1.28-2.1-.7-.27-1.37-.6-2-.99.17-.13.34-.26.5-.4a14.1 14.1 0 0 0 11.5 0c.16.14.33.27.5.4-.63.39-1.3.72-2 .99.37.74.8 1.44 1.28 2.1a19.86 19.86 0 0 0 5.99-3.02c.44-4.74-.76-8.83-3.21-12.47ZM8.02 14.33c-1.18 0-2.15-1.08-2.15-2.4 0-1.33.95-2.4 2.15-2.4 1.2 0 2.17 1.08 2.15 2.4 0 1.32-.95 2.4-2.15 2.4Zm7.96 0c-1.18 0-2.15-1.08-2.15-2.4 0-1.33.95-2.4 2.15-2.4 1.2 0 2.17 1.08 2.15 2.4 0 1.32-.95 2.4-2.15 2.4Z"/></svg>`,
 
@@ -77,7 +88,9 @@ const ICONS = {
     eye: `<svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5ZM12 17a5 5 0 1 1 0-10 5 5 0 0 1 0 10Zm0-8a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z"/></svg>`
 };
 
-
+// ============================================================
+//   LINKI
+// ============================================================
 function setLinks() {
     const box = document.getElementById('links');
     box.innerHTML = '';
@@ -95,11 +108,12 @@ function setLinks() {
         box.appendChild(a);
     });
 
-
     if (CONFIG.effects.customCursor) attachCursorListeners();
 }
 
-
+// ============================================================
+//   TŁO
+// ============================================================
 function setBackground() {
     const bg = CONFIG.background;
     const canvas = document.getElementById('bg-canvas');
@@ -171,7 +185,9 @@ function setBackground() {
     }
 }
 
-
+// ============================================================
+//   MATRIX
+// ============================================================
 function startMatrix() {
     const canvas = document.getElementById('bg-canvas');
     const ctx = canvas.getContext('2d');
@@ -214,7 +230,9 @@ function startMatrix() {
     setInterval(draw, 45);
 }
 
-
+// ============================================================
+//   PARTICLES
+// ============================================================
 function startParticles() {
     const canvas = document.getElementById('bg-canvas');
     const ctx = canvas.getContext('2d');
@@ -252,7 +270,9 @@ function startParticles() {
     window.addEventListener('resize', () => { resize(); init(); });
 }
 
-
+// ============================================================
+//   CURSOR
+// ============================================================
 function initCursor() {
     const dot = document.querySelector('.cursor-dot');
     const ring = document.querySelector('.cursor-ring');
@@ -281,7 +301,9 @@ function attachCursorListeners() {
     });
 }
 
-
+// ============================================================
+//   LICZNIK
+// ============================================================
 async function initCounter() {
   const el = document.getElementById('visits');
   const url = CONFIG.counter.url;
@@ -312,15 +334,16 @@ async function initCounter() {
   }
 }
 
+// ============================================================
+//   INTRO
+// ============================================================
 function initIntro() {
     const intro = document.getElementById('intro');
 
     const enter = () => {
         intro.classList.add('hidden');
 
-
         startMusicAfterIntro();
-
 
         spawnRipple(window.innerWidth / 2, window.innerHeight / 2);
 
@@ -332,6 +355,9 @@ function initIntro() {
     document.addEventListener('keydown', enter);
 }
 
+// ============================================================
+//   MUZYKA
+// ============================================================
 function startMusicAfterIntro() {
   const m = CONFIG.music;
   const audio = document.getElementById('audio');
@@ -347,7 +373,6 @@ function startMusicAfterIntro() {
   audio.volume = m.volume;
   audio.muted = false;
 
-  // ustaw ikonę zgodnie ze stanem
   const setIcon = (muted) => {
     btn.innerHTML = muted ? ICONS.muted : ICONS.volume;
     btn.classList.toggle('muted', muted);
@@ -366,6 +391,9 @@ function startMusicAfterIntro() {
   });
 }
 
+// ============================================================
+//   RIPPLE
+// ============================================================
 function initRipple() {
     document.addEventListener('click', (e) => {
         spawnRipple(e.clientX, e.clientY);
@@ -384,9 +412,10 @@ function spawnRipple(x, y) {
     setTimeout(() => r.remove(), 700);
 }
 
-
+// ============================================================
+//   TILT
+// ============================================================
 function initTilt() {
-
     if (window.matchMedia('(hover: none)').matches) return;
 
     const card = document.getElementById('card');
@@ -398,7 +427,6 @@ function initTilt() {
         const rect = card.getBoundingClientRect();
         const cx = rect.left + rect.width / 2;
         const cy = rect.top + rect.height / 2;
-
 
         const dx = Math.max(-1, Math.min(1, (e.clientX - cx) / (window.innerWidth / 2)));
         const dy = Math.max(-1, Math.min(1, (e.clientY - cy) / (window.innerHeight / 2)));
@@ -416,9 +444,104 @@ function initTilt() {
        translate(${moveX}px, ${moveY}px)`;
     });
 
-
     document.addEventListener('mouseleave', () => {
         card.style.transform =
             `translate(-50%, -50%) perspective(1000px) rotateX(0) rotateY(0)`;
     });
+}
+
+// ============================================================
+//   DISCORD PRESENCE (Lanyard API)
+// ============================================================
+// ⚠️ WKLEJ TU SWOJE DISCORD USER ID (jako string!)
+// Jak zdobyć: Discord → Ustawienia → Zaawansowane → Tryb dewelopera
+// → prawy klik na swój nick → Kopiuj identyfikator użytkownika
+// ⚠️ Musisz być na serwerze: discord.gg/lanyard
+const DISCORD_USER_ID = "TU_WKLEJ_SWOJE_ID";
+let discordInterval = null;
+
+async function initDiscordPresence() {
+  const el = document.getElementById('discord-activity');
+  if (!el) return;
+
+  if (!DISCORD_USER_ID || DISCORD_USER_ID === "TU_WKLEJ_SWOJE_ID") {
+    el.style.display = 'none';
+    return;
+  }
+
+  try {
+    const res = await fetch(`https://api.lanyard.rest/v1/users/${DISCORD_USER_ID}`);
+    const json = await res.json();
+
+    if (!json.success || !json.data) {
+      el.innerHTML = '';
+      return;
+    }
+
+    const d = json.data;
+    const status = d.discord_status;
+
+    let html = '';
+
+    if (d.listening_to_spotify && d.spotify) {
+      const s = d.spotify;
+      html = `
+        <div class="dc-card dc-spotify">
+          <img class="dc-cover" src="${s.album_art_url}" alt="cover" />
+          <div class="dc-info">
+            <div class="dc-label">${ICONS.spotify} Słucha Spotify</div>
+            <div class="dc-title">${escapeHtml(s.song)}</div>
+            <div class="dc-sub">${escapeHtml(s.artist)}</div>
+          </div>
+        </div>`;
+    } else if (d.activities && d.activities.length > 0) {
+      const act = d.activities.find(a => a.type !== 4) || d.activities[0];
+      const img = act.assets?.large_image;
+      const imgUrl = img
+        ? (img.startsWith('mp:')
+            ? `https://media.discordapp.net/${img.replace('mp:', '')}`
+            : `https://cdn.discordapp.com/app-assets/${act.application_id}/${img}.png`)
+        : '';
+
+      html = `
+        <div class="dc-card">
+          ${imgUrl ? `<img class="dc-cover" src="${imgUrl}" alt="game" />` : ''}
+          <div class="dc-info">
+            <div class="dc-label">${ICONS.discord} Gra w</div>
+            <div class="dc-title">${escapeHtml(act.name)}</div>
+            ${act.details ? `<div class="dc-sub">${escapeHtml(act.details)}</div>` : ''}
+            ${act.state ? `<div class="dc-sub">${escapeHtml(act.state)}</div>` : ''}
+          </div>
+        </div>`;
+    } else {
+      const statusLabel = {
+        online: 'Online',
+        idle: 'Zaraz wracam',
+        dnd: 'Nie przeszkadzać',
+        offline: 'Offline'
+      }[status] || 'Offline';
+
+      html = `
+        <div class="dc-card dc-idle">
+          <div class="dc-info">
+            <div class="dc-label">${ICONS.discord} Discord</div>
+            <div class="dc-title">${statusLabel}</div>
+          </div>
+        </div>`;
+    }
+
+    el.innerHTML = html;
+    el.style.display = 'block';
+  } catch (e) {
+    console.warn('Discord presence error:', e.message);
+  }
+}
+
+function escapeHtml(str) {
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
 }
